@@ -1,0 +1,106 @@
+#include <RcppArmadillo.h>
+#include "commons.h"
+
+using namespace Rcpp;
+using namespace arma;
+
+// Implements the finite verstion of the Dirichlet-Bernoulli model
+// using full augmentation with Z and C variables.
+// C is initializated as Z, and represened as a FxN matrix
+// The real C, however, is FxKxN since it may have multiple active dimensions
+// Its counters are like those of Z, but the real C is not properly 
+// updated by now. We only need its counters anyway.
+// WARNING: THIS FUNCTIONS HAS NOT BEEN TESTED 
+// [[Rcpp::export]]
+SEXP Gibbs_DirBer_ZC_finite_Rcpp(const arma::imat& V, 
+                                 arma::imat Z, int K,
+                                 double alpha = 1, double beta =1, double gamma=1, 
+                                 int iter=100,
+                                 double burnin = 0.5){
+  
+  int Kmax = K;
+  int F = V.n_rows;
+  int N = V.n_cols;
+  arma::vec	probs(Kmax);
+  arma::vec	gamma_post(Kmax);
+  arma::ivec ans(Kmax);
+  arma::rowvec unifs(Kmax);
+  arma::vec alpha_post(Kmax);
+  arma::vec	beta_post(Kmax);
+  int nburnin = std::floor(iter*burnin);
+  int nsamples = iter - std::floor(iter*burnin);
+  
+  //Results storage
+  arma::icube Z_samples(F,N,nsamples);
+  Z_samples.zeros();
+  
+  arma::cube E_C(F,K,N);
+  E_C.zeros();
+  arma::icube C(F,K,N);
+  C.zeros();
+
+  int j = 0;
+  
+  // First counts
+  // While sampling we only update individual elements
+  counts          cnt_z(F, Kmax, N);
+  counts_multiple cnt_c(F, Kmax, N);
+  compute_counts(V,Z,cnt_z);
+  compute_counts_multiple(V,C,cnt_c);
+  
+  // Resample the topic assigment k of each count
+  for(int i=1; i<iter; i++){
+    Rcout << "sample: " << i << '/' << iter << std::endl;
+    
+    for(int n=0; n<N; n++){
+      for(int f=0; f<F; f++){
+        if(V(f,n) != NA_INTEGER){
+        
+          // Sample C
+          remove_assignment_multiple(f, n, C, V, cnt_c);
+          alpha_post = alpha + conv_to<vec>::from(cnt_c.f_total.row(n));
+          beta_post  = beta  + F - 1 - conv_to<vec>::from(cnt_c.f_total.row(n));
+          probs = alpha_post/(alpha_post + beta_post);
+
+          //Re-activate the chosen dimensions
+          ans = Rcpp::runif(Kmax) < as<NumericVector>(wrap(probs));
+          set_assignment_multiple(f, n, ans, C, V, cnt_c);
+          
+          // Sample Z          
+          remove_assignment(f, n, Z, V, cnt_z);
+          
+          // Compute probability of every component
+          gamma_post =  gamma + conv_to<vec>::from(cnt_z.n_total.row(f));
+          probs = gamma_post/accu(gamma_post); 
+          
+          // Draw assignment
+          ans = ans.zeros();
+          rmultinom(1, probs.begin(), Kmax, ans.begin());
+          int k = arma::index_max(ans);
+          
+          set_assignment(f, n, k, Z, V, cnt_z);
+        
+          
+        }
+      }
+    }
+    
+    // After burning, store samples
+    // (or sufficient statistics, if samples won't be needed)
+    if(i >= nburnin){
+      Z_samples.slice(j) = Z;
+      E_C += conv_to<cube>::from(C);
+      j = j + 1;
+    }
+  }
+  
+  if(arma::any(arma::vectorise(alpha_post) < 0)) {stop("Negative values in alpha_post");}
+  if(arma::any(arma::vectorise(beta_post) < 0)) {stop("Negative values in beta_post");}
+  
+  // Compute E[Z]
+  arma::cube E_Z = compute_expectation_Z(Z_samples);
+  
+  return Rcpp::List::create(Rcpp::Named("Z_samples") = wrap(Z_samples),
+                            Rcpp::Named("E_Z") = wrap(E_Z),
+                            Rcpp::Named("E_C") = wrap(E_Z));
+}
