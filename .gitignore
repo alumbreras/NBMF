@@ -1,0 +1,11 @@
+data-raw/
+*RData
+.Rproj.user
+*TODO*
+*.Rproj
+.Rbuildignore
+*.zip
+*.eps
+*.png
+results_*
+
