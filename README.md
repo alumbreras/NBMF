@@ -16,3 +16,5 @@ Code for our paper "Bayesian Mean-parameterized Nonnegative Binary Matrix Factor
 
 ## Experiments
 
+Figure 2: xp_paper_synthetic.R
+xp_example.R a toy example to get familirazed with the general functions.

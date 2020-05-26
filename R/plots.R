@@ -359,34 +359,6 @@ plot_trace_W_dimensions <- function(W_samples){
 }
 
 
-#' #' @title Plot trace of w_k * h_k
-#' plot_trace_WH_dimensions <- function(W_samples, H_samples){
-#'   J <- dim(W_traces)[3]
-#'   K <- dim(W_samples)[2]
-#'   m <- matrix(NA, J, K)
-#'   for(j in 1:J){
-#'     W_samples[,,j] %*% H_samples[,,j]
-#'   }
-#'   F <- dim(Z_samples)[1]
-#'   N <- dim(Z_samples)[2]
-#'   
-#'   
-#'   df.traces <- data.frame(sample = 1:J)
-#'   for(i in 1:nelements){
-#'     df.traces <- cbind(df.traces, Z_samples[f_selected[i], n_selected[i],])
-#'   }
-#'   names(df.traces)[2:(nelements+1)] <- 1:nelements
-#'   df.traces <- gather(df.traces, key="element", value = "k", -sample)
-#'   p <- ggplot(df.traces, aes(x=sample, y = k, group = element, color= element))+
-#'     facet_grid(element~.)+ 
-#'     geom_line() + 
-#'     theme_bw() +
-#'     theme(legend.position = "none")+
-#'     ylab("k")
-#'   p
-#' }
-
-
 #' @title Plot number of active components during the Gibbs sampler
 plot_trace_size_components <- function(model){
   Z_samples <- model$Z_samples
@@ -403,6 +375,7 @@ plot_trace_size_components <- function(model){
     theme_bw() + 
     ylab("components size")
 }
+
 
 #' @title Plot trace of some elements Z(f,n)
 plot_trace_elements <- function(model, nelements = 10){
@@ -429,6 +402,7 @@ plot_trace_elements <- function(model, nelements = 10){
   p
 }
 
+
 #' @title Plot number of active components during the Gibbs sampler
 plot_trace_ncomponents <- function(model){
   Z_samples <- model$Z_samples
@@ -446,7 +420,6 @@ plot_trace_lowerbound <- function(model){
   lb <- c(model$lowerbounds)
   df <- data.frame(iter = 1:length(lb), lb=lb)
   p <- ggplot(df, aes(x=iter, y=lb)) + geom_line(size=0.5) + 
-    #geom_point(size=0.2)+
     theme_bw() +
     theme(axis.text = element_text(color = "black")) +
     ylab("Lower Bound") + xlab("iteration")
