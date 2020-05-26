@@ -1,41 +1,5 @@
 devtools::load_all()
 
-# Square plots ------------------------
-
-data("unvotes100")
-p <- plot_V(unvotes100)
-dataset <- "unvotes100"
-ggsave(p, filename = paste0('fig_V_', dataset, '.eps'), 
-       height=8, width=8, units='cm')
-
-data("lastfm")
-p <- plot_V(lastfm)
-dataset <- "lastfm"
-ggsave(p, filename = paste0('fig_V_', dataset, '.eps'), 
-       height=8, width=8, units='cm')
-
-data("paleo")
-p <- plot_V(paleo)
-dataset <- "paleo"
-ggsave(p, filename = paste0('fig_V_', dataset, '.eps'), 
-       height=8, width=8, units='cm')
-
-data("catalanparliament")
-p <- plot_V(catalanparliament)
-dataset <- "parliament"
-ggsave(p, filename = paste0('fig_V_', dataset, '.eps'), 
-       height=8, width=8, units='cm')
-
-data("animals")
-p <- plot_V(animals)
-dataset <- "animals"
-ggsave(p, filename = paste0('fig_V_', dataset, '.eps'), 
-       height=8, width=8, units='cm')
-
-
-# Proportional plots ---------------------------------
-
-
 data("unvotes100")
 p <- plot_V(unvotes100, xlab="vote", ylab = "country", aspect.ratio=1/3)
 dataset <- "unvotes100"
@@ -53,7 +17,6 @@ p <- plot_V(unvotes100_abs, xlab="vote", ylab = "country", aspect.ratio=1/3)
 dataset <- "unvotes100_abs_chronological"
 ggsave(p, filename = paste0('fig_V_dmkd_', dataset, '.eps'), 
        height=5, width=12, units='cm')
-
 
 data("lastfm")
 p <- plot_V(lastfm, xlab="band", ylab = "user", aspect.ratio=4.2/1)
