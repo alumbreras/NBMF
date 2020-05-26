@@ -54,8 +54,8 @@ for(f in 1:F){
 for(n in 1:N){
   H[,n] <- rdirichlet(1, rep(alpha,K))
 }
-
 V <- sample_V(W,H)
+
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 

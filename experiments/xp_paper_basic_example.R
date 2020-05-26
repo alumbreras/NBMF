@@ -22,11 +22,9 @@ H <- array(NA, dim = c(K,N))
 for(f in 1:F){
   W[f,] <- rdirichlet(1, rep(alpha,K))
 }
-
 for(n in 1:N){
   H[,n] <- rbeta(K, alpha,beta)
 }
-
 V <- sample_V(W,H)
 
 # Infer latent factors and posterior mean ----
