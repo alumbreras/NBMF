@@ -31,6 +31,6 @@ The other files are:
 
 * `xp_paper_fig7-8-9_dictionaries`: infers and plots the expectation of the dictionaries W (Figures 7 to 9). 
 
-* `xp_paper_fig10_predictive_likelihood`: infers the latent factors and posterior of V, and plots the log-likelihood on unobserved parts of the matrix.
+* `xp_paper_fig10_predictive_likelihood`: infers the latent factors and posterior of V, and plots the log-likelihood on unobserved parts of the matrix (Figure 10).
 
 * `xp_paper_fig11_VB_convergences`: runs VB algorithms and plots their predictive log-likelihood to compare speed of convergence (Figure 11). 
