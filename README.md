@@ -4,7 +4,7 @@ Code for our paper "Bayesian Mean-parameterized Nonnegative Binary Matrix Factor
 
 ## Project structure
 
-* R: algorithms in R. The main file is BernoulliNMF.R, that contains the function BernoulliNMF, that performs the inference of the latent matrices W and H. The inference method is chosen through the parameters. Both MCMC and VB methods are mostly writenn in Rcpp ('src' folder).
+* `R`: algorithms in R. The main file is BernoulliNMF.R, that contains the function BernoulliNMF, that performs the inference of the latent matrices W and H. The inference method is chosen through the parameters. Both MCMC and VB methods are mostly writenn in Rcpp ('src' folder).
 
 * `src`: implementation of MCMC and VB algorithms in Rcpp. These methods are called from the ones in the R folder.
 
