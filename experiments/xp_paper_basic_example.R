@@ -37,11 +37,12 @@ res <- BernoulliNMF(V, K=K, model="DirBer",
 E_Z <- res$E_Z
 E_W <- res$E_W
 E_H <- res$E_H
-plot_dictionary(E_W, Kmax=10, rowlabels=TRUE, aspect.ratio = 7)
 E_V <- expectation(res)
+
+plot_trace_size_components(res)
+plot_dictionary(E_W, Kmax=10, rowlabels=TRUE, aspect.ratio = 7)
 plot_V(E_V)
-like <- loglikelihood(res, V)$loglikelihood # quality of fit
-cat("log-likelihood:", like)
+loglikelihood(res, V)$loglikelihood
 
 # Assume a Dir-Dir model
 res <- BernoulliNMF(V, K=K, model="DirDir", 
@@ -50,8 +51,9 @@ res <- BernoulliNMF(V, K=K, model="DirDir",
 E_Z <- res$E_Z
 E_W <- res$E_W
 E_H <- res$E_H
+E_V <- expectation(res)
+
+plot_trace_size_components(res)
 plot_dictionary(E_W, Kmax=10, rowlabels=TRUE, aspect.ratio = 7)
-E_V_DirDir <- expectation(res)
 plot_V(E_V)
-like <- loglikelihood(res, V)$loglikelihood # quality of fit
-cat("log-likelihood:", like)
+loglikelihood(res, V)$loglikelihood

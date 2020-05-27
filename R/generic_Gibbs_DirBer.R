@@ -1,6 +1,10 @@
-Gibbs_DirBer <-function(V, Z, K=K, 
-                                alpha=1, beta=1, gamma=1, 
-                                iter=100, burnin = 1000){
+Gibbs_DirBer <-function(V, Z, 
+                        K=K,
+                        alpha=1, 
+                        beta=1, 
+                        gamma=1, 
+                        iter=100, 
+                        burnin = 1000){
   
   if(gamma < 1/K) {warning("Gamma very small")}
   

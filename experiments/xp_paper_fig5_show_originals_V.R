@@ -22,7 +22,6 @@ data("lastfm")
 p <- plot_V(lastfm, xlab="band", ylab = "user", aspect.ratio=4.2/1)
 dataset <- "lastfm"
 ggsave(p, filename = paste0('fig_V_dmkd_', dataset, '.eps'), 
-       #height=22, width=7, units='cm')
        height=20, width=6, units='cm')
 
 data("paleo")
