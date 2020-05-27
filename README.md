@@ -24,7 +24,6 @@ First, in order to get acquainted with the general workflow and functions, we su
 The other files are:
 
 * `xp_paper_fig2_synthetic`: generates synthetic data from the different generative models (Figure 2).
-
 * `xp_paper_fig5_originals`: plots the datasets used in the experiments (Figure 3).
 
 * `xp_paper_fig6_reconstruct`: infers the latent factors and plot the expectation of V (Figure 6). 
