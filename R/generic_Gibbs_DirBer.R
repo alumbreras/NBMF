@@ -120,8 +120,6 @@ sample_VWH.GibbsDirBer <- function(modelGibbsDirBer){
   N <- dim(Z_samples)[2]
   J <- dim(Z_samples)[3]
   K <- max(Z_samples, na.rm = TRUE)+1
-  #W <- array(NA, dim=c(F,K))
-  #H <- array(NA, dim=c(N,K))
   j <- sample((J-50):J,1) # use one of the last samples from Z
   
   cat("\n j:", j)

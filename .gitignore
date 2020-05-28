@@ -1,6 +1,7 @@
 data-raw/
 *RData
 .Rproj.user
+.Rhistory
 *TODO*
 *.Rproj
 .Rbuildignore
