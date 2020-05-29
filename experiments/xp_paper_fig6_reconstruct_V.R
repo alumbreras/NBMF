@@ -18,12 +18,6 @@ data("unvotes100coldwar_absna")
 data("paleo")
 data("catalanparliament")
 
-# Manually add some absent country codes
-un_votes[un_votes$country == 'Federal Republic of Germany', ]$country_code <- 'FG'
-un_votes[un_votes$country == 'Zanzibar', ]$country_code <- 'ZN'
-un_votes[un_votes$country == 'Yemen Arab Republic', ]$country_code <- 'YR'
-#country_codes <- un_votes$country_code[match(rownames(V), un_votes$country)]
-
 # Datasets used in this experiment in the paper
 dataset_names <- c('paleo', 'unvotes100coldwar_absna', 'parlamentcat')
 datasets <- list(paleo, unvotes100coldwar_absna, catalanparliament)
