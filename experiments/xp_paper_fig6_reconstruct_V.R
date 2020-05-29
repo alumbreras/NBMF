@@ -9,19 +9,20 @@ library(Matrix)
 library(gtools)
 #library(data.table)
 library(logisticPCA)
-
 library(unvotes)
-un_votes[un_votes$country == 'Federal Republic of Germany', ]$country_code <- 'FG'
-un_votes[un_votes$country == 'Zanzibar', ]$country_code <- 'ZN'
-un_votes[un_votes$country == 'Yemen Arab Republic', ]$country_code <- 'YR'
-# country_codes <- un_votes$country_code[match(rownames(V), un_votes$country)]
+
+text_components <-  7
+text_features <- 7
 
 data("unvotes100coldwar_absna")
 data("paleo")
 data("catalanparliament")
 
-text_components <-  7
-text_features <- 7
+# Manually add some absent country codes
+un_votes[un_votes$country == 'Federal Republic of Germany', ]$country_code <- 'FG'
+un_votes[un_votes$country == 'Zanzibar', ]$country_code <- 'ZN'
+un_votes[un_votes$country == 'Yemen Arab Republic', ]$country_code <- 'YR'
+#country_codes <- un_votes$country_code[match(rownames(V), un_votes$country)]
 
 # Datasets used in this experiment in the paper
 dataset_names <- c('paleo', 'unvotes100coldwar_absna', 'parlamentcat')
