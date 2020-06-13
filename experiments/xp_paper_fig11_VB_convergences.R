@@ -7,30 +7,31 @@ library(digest)
 
 
 data("unvotes100coldwar_absna")
+data("paleo")
+data("lastfm")
+data("catalanparliament")
+data("animals")
+
 V <- unvotes100coldwar_absna
 dataset <- "unvotes100coldwar_absna"
 k <- 4
 K <- 100
 
-data("paleo")
 V <- paleo
 dataset <- "paleo"
 K <- 100
 k <- 4
 
-data("lastfm")
 V <- lastfm
 dataset <- "lastfm"
 k <- 5
 K <- 100
 
-data("catalanparliament")
 V <- catalanparliament
 dataset <- "parliament"
 k <- 5
 K <- 100
 
-data("animals")
 V <- animals
 dataset <- "animals"
 k <- 5
@@ -43,7 +44,6 @@ df.results <- data.frame()
 
 repetitions <- 30
 for(xp in 1:repetitions){
-  
   
   mask_test <- array(0, dim=c(F,N))
   for(f in 1:F){

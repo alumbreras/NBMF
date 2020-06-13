@@ -235,7 +235,4 @@ for (i in 1:length(dataset_names)) {
          height=parameters$ggsave.height, 
          width=parameters$ggsave.width, 
          units='cm')
-
-
-
 }
