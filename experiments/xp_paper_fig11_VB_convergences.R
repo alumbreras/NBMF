@@ -78,74 +78,89 @@ for (d in 1:length(dataset_names)) {
   
       # Aspect -----------------------------------------------------------------
       modelVBaspect <- BernoulliNMF(V.train, 
-                                    K=k, 
-                                    model="aspectRcpp", 
-                                    method="VB",
-                                    alpha=1, 
-                                    beta=1, 
-                                    gamma=1, 
-                                    iter=i, 
+                                    K = k, 
+                                    model = "aspectRcpp", 
+                                    method = "VB",
+                                    alpha = 1, 
+                                    beta = 1, 
+                                    gamma = 1, 
+                                    iter = i, 
                                     Z_init = Z)
       
       pred <- loglikelihood(modelVBaspect, V.test)
       
       df.results <- bind_rows(df.results, list(xphash = hash,
-                                               xp=xp, 
-                                               model= "Aspect",
+                                               xp = xp, 
+                                               model = "Aspect",
                                                loglikelihood = pred$loglikelihood,
-                                               K=k,
+                                               K = k,
                                                iter = i,
                                                dataset = dataset,
                                                ntest = ntest))
       
       # collapsed Aspect -------------------------------------------------------
-      modelVBDirBer <- BernoulliNMF(V.train, K=k, model="DirBer", method="VB",
-                                    alpha=1, beta=1, gamma=1, 
-                                    iter=i, Z_init = Z)
+      modelVBDirBer <- BernoulliNMF(V.train, 
+                                    K = k, 
+                                    model = "DirBer", 
+                                    method = "VB",
+                                    alpha = 1, 
+                                    beta = 1, 
+                                    gamma = 1, 
+                                    iter = i, 
+                                    Z_init = Z)
       
       pred <- loglikelihood(modelVBDirBer, V.test)
       df.results <- bind_rows(df.results, list(xphash = hash,
-                                               xp=xp, 
-                                               model= "collapsed Aspect",
+                                               xp = xp, 
+                                               model = "collapsed Aspect",
                                                loglikelihood = pred$loglikelihood,
-                                               K=k,
+                                               K = k,
                                                iter = i,
                                                dataset = dataset,
                                                ntest = ntest))
       
       
       # Beta-Dir init k small --------------------------------------------------
-      modelVBDirBer <- BernoulliNMF(V.train, K=K, model="DirBer", method="VB",
+      modelVBDirBer <- BernoulliNMF(V.train, 
+                                    K = K, 
+                                    model = "DirBer", 
+                                    method = "VB",
                                     K_init = k,
-                                    alpha=1, beta=1, gamma=1/K, 
-                                    iter=i, Z_init = Z)
+                                    alpha = 1, 
+                                    beta = 1, 
+                                    gamma = 1/K, 
+                                    iter = i, 
+                                    Z_init = Z)
       
       pred <- loglikelihood(modelVBDirBer, V.test)
       df.results <- bind_rows(df.results, list(xphash = hash,
-                                               xp=xp, 
-                                               model= "VB Beta-Dir - k small",
+                                               xp = xp, 
+                                               model = "VB Beta-Dir - k small",
                                                loglikelihood = pred$loglikelihood,
-                                               K=K,
+                                               K = K,
                                                iter = i,
                                                dataset = dataset,
                                                ntest = ntest))
      
       # Beta-Dir ---------------------------------------------------------------
-      modelVBDirBer <- BernoulliNMF(V.train, K=K, model="DirBer", method="VB",
-                                    alpha=1, beta=1, gamma=1/K, 
-                                    iter=i)
+      modelVBDirBer <- BernoulliNMF(V.train, 
+                                    K = K, 
+                                    model = "DirBer", 
+                                    method = "VB",
+                                    alpha = 1, 
+                                    beta = 1, 
+                                    gamma = 1/K, 
+                                    iter = i)
       
       pred <- loglikelihood(modelVBDirBer, V.test)
       df.results <- bind_rows(df.results, list(xphash = hash,
-                                               xp=xp, 
-                                               model= "VB Beta-Dir",
+                                               xp = xp, 
+                                               model = "VB Beta-Dir",
                                                loglikelihood = pred$loglikelihood,
-                                               K=K,
+                                               K = K,
                                                iter = i,
                                                dataset = dataset,
                                                ntest = ntest))
-      
-       
     }
   }
 }
@@ -161,7 +176,7 @@ write.table(df.results,
 
 
 # Plot -------------------------------------------------------------------------
-df <- read.table( file = results_file, sep=",")
+df <- read.table( file = results_file, sep = ",")
 names(df) <- c('xphash', 
                'xp', 
                'model', 
@@ -214,11 +229,11 @@ p <- ggplot(df %>% filter(iter < 100),
   facet_grid(dataset ~ ., scales = "free") +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 0, 
-                                   size=base_size*1, 
+                                   size = base_size*1, 
                                    hjust = 1, 
                                    colour = "black"),
-        axis.text.y = element_text(size= base_size, color = 'black'),
-        strip.background =element_rect(fill="white"),
+        axis.text.y = element_text(size = base_size, color = 'black'),
+        strip.background =element_rect(fill = "white"),
         legend.title = element_blank(),
         legend.position = "top",
         aspect.ratio = 1/3.5) + 
@@ -226,6 +241,6 @@ p <- ggplot(df %>% filter(iter < 100),
   ylab('perplexity')
 print(p)
 
-ggsave(p, filename = plots_file, height=17, width=13, units='cm')
+ggsave(p, filename = plots_file, height = 17, width = 13, units = 'cm')
 
 

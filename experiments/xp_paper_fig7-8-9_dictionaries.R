@@ -10,9 +10,10 @@ library(Matrix)
 library(gtools)
 library(logisticPCA)
 library(unvotes)
-
 text_components <-  7
 text_features <- 7
+
+plots_file <- "fig789_dictionaries"
 
 data("animals")
 data("paleo")
@@ -50,12 +51,12 @@ for (i in 1:length(dataset_names)) {
   
   # Gibbs DirBer -----------------------------------------------------------------
   modelGibbsDirBer <- BernoulliNMF(V, 
-                                   K=K, 
-                                   model="DirBer", 
-                                   alpha=alpha, 
-                                   beta=beta, 
-                                   gamma=gamma/K, 
-                                   iter=gibbs.samples, 
+                                   K = K, 
+                                   model = "DirBer", 
+                                   alpha = alpha, 
+                                   beta = beta, 
+                                   gamma = gamma/K, 
+                                   iter = gibbs.samples, 
                                    burnin = burnin)
   E_W <- modelGibbsDirBer$E_W
   like <- loglikelihood(modelGibbsDirBer, V)$loglikelihood # quality of fit
@@ -66,12 +67,12 @@ for (i in 1:length(dataset_names)) {
 
   # Gibbs DirDir -----------------------------------------------------------------
   modelGibbsDirDir <- BernoulliNMF(V, 
-                                   K=K, 
-                                   model="DirDir", 
-                                   alpha=alpha,
-                                   beta=beta,
-                                   gamma=gamma/K, 
-                                   iter=gibbs.samples, 
+                                   K = K, 
+                                   model = "DirDir", 
+                                   alpha = alpha,
+                                   beta = beta,
+                                   gamma = gamma/K, 
+                                   iter = gibbs.samples, 
                                    burnin = burnin)
   
   E_W <- modelGibbsDirDir$E_W
@@ -88,13 +89,13 @@ for (i in 1:length(dataset_names)) {
   models <- list()
   for(k in 1:Kmax){
     modelVBaspect <- BernoulliNMF(V, 
-                                  K=k, 
-                                  model="aspectRcpp", 
-                                  method="VB",
-                                  alpha=alpha, 
-                                  beta=beta, 
-                                  gamma=gamma, 
-                                  iter=vb.iters)
+                                  K = k, 
+                                  model = "aspectRcpp", 
+                                  method = "VB",
+                                  alpha = alpha, 
+                                  beta = beta, 
+                                  gamma = gamma, 
+                                  iter = vb.iters)
     E_W <- modelVBaspect$E_W
     like <- loglikelihood(modelVBaspect, V)$loglikelihood
     lb   <- max(modelVBaspect$lowerbounds)
@@ -105,14 +106,13 @@ for (i in 1:length(dataset_names)) {
                                              model = "VB Aspect", 
                                              likelihood = like,
                                              lowerbound = lb,
-                                             K=k))
+                                             K = k))
     
   }
   modelVBaspect <- models[[which.max(likes)]]
   E_W <- modelVBaspect$E_W
-  p <- plot_dictionary(E_W, Kmax=100, rowlabels=TRUE)
+  p <- plot_dictionary(E_W, Kmax = 100, rowlabels = TRUE)
 
-  
   # logPCA --------------------------------------------------------------------
   Kmax <- 8 # set it to K in the aspect model
   likes <- rep(-Inf, Kmax)
@@ -126,24 +126,23 @@ for (i in 1:length(dataset_names)) {
     likes[k] <- like
     models[[k]] <- logpca_model
     df.results <- bind_rows(df.results, list(dataset = dataset,
-                                             model= "logPCA",
+                                             model = "logPCA",
                                              loglikelihood = like,
-                                             K=k))
+                                             K = k))
   }
   modelLogPCA <- models[[which.max(likes)]]
   W <- modelLogPCA$A
-  p <- plot_dictionary(W, Kmax=100, rowlabels=TRUE)
-  
+  p <- plot_dictionary(W, Kmax = 100, rowlabels = TRUE)
   
   # VB DirBer --------------------------------------------------------------------
   modelVBDirBer <- BernoulliNMF(V, 
-                                K=K, 
-                                model="DirBer", 
-                                method="VB",
-                                alpha=1, 
-                                beta=1, 
-                                gamma=1/K, 
-                                iter=vb.iters)
+                                K = K, 
+                                model = "DirBer", 
+                                method = "VB",
+                                alpha = 1, 
+                                beta = 1, 
+                                gamma = 1/K, 
+                                iter = vb.iters)
   
   E_W <- modelVBDirBer$E_W
   like <- loglikelihood(modelVBDirBer, V)$loglikelihood
@@ -152,7 +151,7 @@ for (i in 1:length(dataset_names)) {
                                            model = "VB Beta-Dir", 
                                            likelihood = like,
                                            lowerbound = lb))
-  p <- plot_dictionary(E_W, Kmax=10, rowlabels=FALSE)
+  p <- plot_dictionary(E_W, Kmax = 10, rowlabels = FALSE)
 
   
   # Plots ----------------------------------------------------------------------
@@ -164,8 +163,8 @@ for (i in 1:length(dataset_names)) {
                        labels = labels,
                        Kmax = 8,
                        aspect.ratio = 10.5,
-                       ggsave.height=34, 
-                       ggsave.width=20)
+                       ggsave.height = 34, 
+                       ggsave.width = 20)
    } else if (dataset == 'parlamentcat') {
      parties <- catalanparliament_labels$party[match(rownames(modelGibbsDirBer$V), 
                                                      catalanparliament_labels$MP)]
@@ -176,8 +175,8 @@ for (i in 1:length(dataset_names)) {
                        labels = labels,
                        Kmax = 8,
                        aspect.ratio = 11,
-                       ggsave.height=34, 
-                       ggsave.width=20) 
+                       ggsave.height = 34, 
+                       ggsave.width = 20) 
    } else if (dataset == 'paleo') {
      labels <- rownames(modelGibbsDirBer$V)
      idx.active <- sort(order(-rowSums(modelGibbsDirBer$V))[1:100])
@@ -185,8 +184,8 @@ for (i in 1:length(dataset_names)) {
                        labels = SAME,
                        Kmax = 8,
                        aspect.ratio = 10.5,
-                       ggsave.height=34, 
-                       ggsave.width=20) 
+                       ggsave.height = 34, 
+                       ggsave.width = 20) 
    } else if (dataset == 'unvotes100coldwar_absna') {
      country_shortnames <- rownames(V)
      country_shortnames[country_shortnames == 'United States of America'] <- "U.S.A"
@@ -205,8 +204,8 @@ for (i in 1:length(dataset_names)) {
                        labels = labels,
                        Kmax = 8,
                        aspect.ratio = 10.5,
-                       ggsave.height=35, 
-                       ggsave.width=20) 
+                       ggsave.height = 35, 
+                       ggsave.width = 20) 
    }
   
    # cast logPCA dictionary from -inf,+inf to [0,1] for visualization purposes
@@ -230,8 +229,8 @@ for (i in 1:length(dataset_names)) {
                                    aspect.ratio = parameters$aspect.ratio,
                                    idx.subset = parameters$idx.active)
   ggsave(p, 
-         filename = paste0("fig_dictionaries_", dataset, ".eps"), 
-         height=parameters$ggsave.height, 
-         width=parameters$ggsave.width, 
-         units='cm')
+         filename = paste0(plots_file, "_", dataset, ".eps"), 
+         height = parameters$ggsave.height, 
+         width = parameters$ggsave.width, 
+         units = 'cm')
 }

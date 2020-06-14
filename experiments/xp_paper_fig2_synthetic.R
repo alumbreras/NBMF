@@ -7,6 +7,8 @@
 devtools::load_all()
 library(gtools)
 
+plots_file <- "fig2"
+
 #' @title Plot matrix after applying hclust
 #' @description Plot a matrix V after applying re-sorting its rows and columns
 #' with a hclust algorithm in order to emphasize its structure
@@ -25,7 +27,7 @@ K <- 4
 W <- array(NA, dim = c(F,K))
 H <- array(NA, dim = c(K,N))
 
-# Generate non-structured matrices ----
+# Generate non-structured matrices ---------------------------------------------
 alpha <- 1
 beta <- 1
 eta <- 1
@@ -34,15 +36,17 @@ eta <- 1
 for(f in 1:F){
   W[f,] <- rdirichlet(1, rep(alpha,K))
 }
+
 for(n in 1:N){
   H[,n] <- rbeta(K, alpha,beta)
 }
+
 V <- sample_V(W,H)
 
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 
-       filename = paste0("fig_2_a_synthetic_BetaDir_nostruct.eps"), 
+       filename = paste0(plots_file, "a_synthetic_BetaDir_nostruct.eps"), 
        height=5, 
        width=5, 
        units='cm')
@@ -51,15 +55,17 @@ ggsave(p,
 for(f in 1:F){
   W[f,] <- rbeta(K, alpha,beta)
 }
+
 for(n in 1:N){
   H[,n] <- rdirichlet(1, rep(alpha,K))
 }
+
 V <- sample_V(W,H)
 
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 
-       filename = paste0("fig_2_b_synthetic_DirBeta_nostruct.eps"), 
+       filename = paste0(plots_file, "b_synthetic_DirBeta_nostruct.eps"), 
        height=5, 
        width=5, units='cm')
 
@@ -67,20 +73,22 @@ ggsave(p,
 for(f in 1:F){
   W[f,] <- rdirichlet(1, rep(alpha,K))
 }
+
 for(n in 1:N){
   H[,n] <- rdirichlet(1, rep(eta,K))
 }
+
 V <- sample_V(W,H)
 
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 
-       filename = paste0("fig_2_c_synthetic_DirDir_nostruct.eps"), 
+       filename = paste0(plots_file, "c_synthetic_DirDir_nostruct.eps"), 
        height=5, 
        width=5, 
        units='cm')
 
-# Generate structured matrices ----
+# Generate structured matrices -------------------------------------------------
 alpha <- 0.1
 beta <- 0.1
 eta <- 0.1
@@ -89,6 +97,7 @@ eta <- 0.1
 for(f in 1:F){
   W[f,] <- rdirichlet(1, rep(alpha,K))
 }
+
 for(n in 1:N){
   H[,n] <- rbeta(K, alpha,beta)
 }
@@ -97,7 +106,7 @@ V <- sample_V(W,H)
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 
-       filename = paste0("fig_2_a_synthetic_BetaDir_struct.eps"), 
+       filename = paste0(plots_file, "a_synthetic_BetaDir_struct.eps"), 
        height=5, 
        width=5, 
        units='cm')
@@ -114,7 +123,7 @@ V <- sample_V(W,H)
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 
-       filename = paste0("fig_2_b_synthetic_DirBeta_struct.eps"), 
+       filename = paste0(plots_file, "b_synthetic_DirBeta_struct.eps"), 
        height=5, 
        width=5, units='cm')
 
@@ -122,15 +131,17 @@ ggsave(p,
 for(f in 1:F){
   W[f,] <- rdirichlet(1, rep(alpha,K))
 }
+
 for(n in 1:N){
   H[,n] <- rdirichlet(1, rep(eta,K))
 }
+
 V <- sample_V(W,H)
 
 plot_V(V)
 p <- plot_V_hclust(V)
 ggsave(p, 
-       filename = paste0("fig_2_c_synthetic_DirDir_struct.eps"), 
+       filename = paste0(plots_file, "c_synthetic_DirDir_struct.eps"), 
        height=5, 
        width=5, 
        units='cm')

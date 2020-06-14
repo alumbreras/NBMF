@@ -5,7 +5,6 @@ library(foreach)
 library(doParallel)
 library(bigmemory)
 library(Matrix)
-library(svs) # Classic NMFs
 
 results_file = "results_predictions_test.csv"
 plots_file <- "fig10_boxplots_predictions_perplexity.eps"
@@ -60,12 +59,12 @@ for (i in 1:length(dataset_names)) {
         }
       }
     }
+    
     V.test  <- as.matrix(V)
     V.train <- as.matrix(V)
   
-    # Test matrix
+    # Test and training matrix
     is.na(V.test) <- !(as.logical(mask_test))
-    # Training matrix
     is.na(V.train) <- as.logical(mask_test)
   
     hash <- digest(V.train)
@@ -188,6 +187,7 @@ for (i in 1:length(dataset_names)) {
                          loglikelihood = pred$loglikelihood)
   
       }
+      
       # collapsed Aspect-------------------------------------------------------------
       if(models.cbICA){
         modelVBaspectcol <- BernoulliNMF(V.train, K=k, model="DirBer", method="VB",
@@ -231,7 +231,6 @@ for (i in 1:length(dataset_names)) {
 }
 
 # Plots ------------------------------------------------------------------------
-
 # ******************************************************************************
 # Prepare dataframe with properly named and sorted models
 # ******************************************************************************
