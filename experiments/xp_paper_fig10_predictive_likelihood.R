@@ -7,8 +7,8 @@ library(bigmemory)
 library(Matrix)
 library(svs) # Classic NMFs
 
-
 results_file = "results_predictions_test.csv"
+plots_file <- "fig10_boxplots_predictions_perplexity.eps"
 
 # Too big. Just show the dictionary
 #load("../data/unvotes100.RData")
@@ -29,7 +29,7 @@ datasets <- list(animals, catalanparliament)
 # Training parameters
 # Use small parameters for fast checks 
 # Use larger parameters for accurate results 
-gibbs.samples <- 10
+gibbs.samples <- 5
 burnin <- 0.9
 vb.iters <- 10
 repetitions   <- 3
@@ -77,20 +77,25 @@ for (i in 1:length(dataset_names)) {
       alpha = 1
       beta = 1
       gamma = 1
-      modelGibbsDirBer <- BernoulliNMF(V.train, K=K, model="DirBer",
-                                       alpha=alpha, beta=beta, gamma=gamma/K,
-                                       iter=gibbs.samples, burnin = burnin)
+      modelGibbsDirBer <- BernoulliNMF(V.train, 
+                                       K = K, 
+                                       model = "DirBer",
+                                       alpha = alpha, 
+                                       beta = beta, 
+                                       gamma = gamma/K,
+                                       iter = gibbs.samples, 
+                                       burnin = burnin)
       E_Z <- modelGibbsDirBer$E_Z
       E_W <- modelGibbsDirBer$E_W
       E_H <- modelGibbsDirBer$E_H
       pred <- loglikelihood(modelGibbsDirBer, V.test)
       df.results <- list(date = date(),
                          xphash = hash,
-                         xp=xp,
+                         xp = xp,
                          dataset = dataset,
                          ntest = ntest,
                          model= "Gibbs Beta-Dir",
-                         K=K,
+                         K = K,
                          loglikelihood = pred$loglikelihood
                          )
       save_result(file = results_file, df.results)
@@ -102,20 +107,24 @@ for (i in 1:length(dataset_names)) {
       alpha = 1
       beta = 1
       gamma = 1
-      modelGibbsDirDir <- BernoulliNMF(V.train, K=K, model="DirDir",
-                                       alpha=alpha, gamma=gamma/K,
-                                       iter=gibbs.samples, burnin = burnin)
+      modelGibbsDirDir <- BernoulliNMF(V.train, 
+                                       K = K, 
+                                       model ="DirDir",
+                                       alpha = alpha, 
+                                       gamma = gamma/K,
+                                       iter = gibbs.samples, 
+                                       burnin = burnin)
       E_Z <- modelGibbsDirDir$E_Z
       E_W <- modelGibbsDirDir$E_W
       E_H <- modelGibbsDirDir$E_H
       pred <- loglikelihood(modelGibbsDirDir, V.test)
       df.results <- list(date = date(),
                          xphash = hash,
-                         xp=xp,
+                         xp = xp,
                          dataset = dataset,
                          ntest = ntest,
-                         model= "Gibbs Dir-Dir",
-                         K=K,
+                         model = "Gibbs Dir-Dir",
+                         K = K,
                          loglikelihood = pred$loglikelihood
                          )
       save_result(file = results_file, df.results)
@@ -127,9 +136,14 @@ for (i in 1:length(dataset_names)) {
       alpha = 1
       beta = 1
       gamma = 1
-      modelVBDirBer <- BernoulliNMF(V.train, K=K, model="DirBer", method="VB",
-                                    alpha=alpha, beta=beta, gamma=gamma/K,
-                                    iter=vb.iters)
+      modelVBDirBer <- BernoulliNMF(V.train, 
+                                    K = K, 
+                                    model = "DirBer", 
+                                    method = "VB",
+                                    alpha = alpha, 
+                                    beta = beta, 
+                                    gamma = gamma/K,
+                                    iter = vb.iters)
       
       E_Z <- modelVBDirBer$E_Z
       E_W <- modelVBDirBer$E_W
@@ -137,24 +151,28 @@ for (i in 1:length(dataset_names)) {
       pred <- loglikelihood(modelVBDirBer, V.test)
       df.results <- list(date = date(),
                          xphash = hash,
-                         xp=xp,
+                         xp = xp,
                          dataset = dataset,
                          ntest = ntest,
-                         model= "VB Beta-Dir",
-                         K=K,
+                         model = "VB Beta-Dir",
+                         K = K,
                          loglikelihood = pred$loglikelihood)
       save_result(file = results_file, df.results)
     }
     
     for(k in 2:7){
-      
-      # VB Aspect ----------------------------------------------------------------
+      # VB Aspect --------------------------------------------------------------
       if(models.bICA){
       alpha = 1
       beta = 1
       gamma = 1
-      modelVBaspect <- BernoulliNMF(V.train, K=k, model="aspectRcpp", method="VB",
-                                    alpha=alpha, beta=beta, gamma=gamma,
+      modelVBaspect <- BernoulliNMF(V.train, 
+                                    K=k, 
+                                    model="aspectRcpp", 
+                                    method="VB",
+                                    alpha=alpha, 
+                                    beta=beta, 
+                                    gamma=gamma,
                                     iter=vb.iters)
       E_Z <- modelVBaspect$E_Z
       E_W <- modelVBaspect$E_W
@@ -162,11 +180,11 @@ for (i in 1:length(dataset_names)) {
       pred <- loglikelihood(modelVBaspect, V.test)
       df.results <- list(date = date(),
                          xphash = hash,
-                         xp=xp,
+                         xp = xp,
                          dataset = dataset,
                          ntest = ntest,
-                         model= "Aspect",
-                         K=k,
+                         model = "Aspect",
+                         K = k,
                          loglikelihood = pred$loglikelihood)
   
       }
@@ -181,11 +199,11 @@ for (i in 1:length(dataset_names)) {
         pred <- loglikelihood(modelVBaspectcol, V.test)
         df.results <- list(date = date(),
                            xphash = hash,
-                           xp=xp,
+                           xp = xp,
                            dataset = dataset,
                            ntest = ntest,
-                           model= "cAspect",
-                           K=k,
+                           model = "cAspect",
+                           K = k,
                            loglikelihood = pred$loglikelihood)
         save_result(file = results_file, df.results)
       }
@@ -200,11 +218,11 @@ for (i in 1:length(dataset_names)) {
         like <- sum(log(V.probs), na.rm = TRUE)
         df.results <- list(date = date(),
                            xphash = hash,
-                           xp=xp,
+                           xp = xp,
                            dataset = dataset,
                            ntest = ntest,
-                           model= "logPCA",
-                           K=k,
+                           model = "logPCA",
+                           K = k,
                            loglikelihood = like)
         save_result(file = results_file, df.results)
       }
@@ -213,7 +231,6 @@ for (i in 1:length(dataset_names)) {
 }
 
 # Plots ------------------------------------------------------------------------
-#
 
 # ******************************************************************************
 # Prepare dataframe with properly named and sorted models
@@ -272,18 +289,6 @@ df <- df %>% group_by(dataset) %>%
 # Plot from dataframes
 # ******************************************************************************
 
-# Loglikelihood with whiskers and crosses
-base_size <- 8
-p <- ggplot(df, 
-            aes(x=model, y=rel_loglikelihood)) +
-  geom_boxplot(outlier.shape = NA) +
-  facet_grid(dataset ~ ., scales = "free") +
-  geom_point(colour = "red", size = 1, shape=3) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, size=base_size*1, hjust = 1, colour = "black"),
-        aspect.ratio = 1/5) + ylab("loglikelihood")
-print(p)
-
 # Perplexity (used in the paper)
 base_size <- 8
 p <- ggplot(df,
@@ -291,9 +296,12 @@ p <- ggplot(df,
   geom_boxplot(outlier.shape = NA) +
   facet_grid(dataset ~ ., scales = "free") +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, size=base_size*1, hjust = 1, colour = "black"),
+  theme(axis.text.x = element_text(angle = 90, 
+                                   size = base_size, 
+                                   hjust = 1, 
+                                   colour = "black"),
         axis.text.y = element_text(size= base_size, color = 'black'),
-        strip.background =element_rect(fill="white"),
+        strip.background = element_rect(fill = "white"),
         aspect.ratio = 1/4)
 print(p)
-ggsave(p, filename = "fig_boxplots_predictions_perplexity.eps", height=18, width=13, units='cm')
+ggsave(p, filename = plots_file, height = 18, width = 13, units = 'cm')

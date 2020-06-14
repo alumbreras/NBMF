@@ -8,7 +8,6 @@ library(tidyr)
 library(ggplot2)
 library(Matrix)
 library(gtools)
-#library(data.table)
 library(logisticPCA)
 library(unvotes)
 

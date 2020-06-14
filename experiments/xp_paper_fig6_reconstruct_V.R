@@ -7,12 +7,12 @@ library(tidyr)
 library(ggplot2)
 library(Matrix)
 library(gtools)
-#library(data.table)
 library(logisticPCA)
 library(unvotes)
-
 text_components <-  7
 text_features <- 7
+
+plots_file <- "fig6_E_V_reconstruction"
 
 data("unvotes100coldwar_absna")
 data("paleo")
@@ -67,8 +67,8 @@ for (i in 1:length(dataset_names)) {
   like <- loglikelihood(res, V)$loglikelihood
   
   # Save results
-  filename <- paste0("fig_E_V_GibbsDirBer_reconstruc_", dataset, ".eps")
   p <- plot_V(E_V)
+  filename <- paste0(plots_file, "_GibbsDirBer_", dataset, ".eps")
   ggsave(p, 
          filename = filename, 
          height=20, 
@@ -87,14 +87,13 @@ for (i in 1:length(dataset_names)) {
   plot_trace_size_components(res)
   plot_dictionary(E_W, Kmax=10, rowlabels=TRUE, aspect.ratio = 7)
   
-  
-  # Gibbs DirDir -----------------------------------------------------------------
+  # Gibbs DirDir ---------------------------------------------------------------
   res <- BernoulliNMF(V, 
-                      K=K, 
-                      model="DirDir", 
-                      alpha=1, 
-                      gamma=1/K, 
-                      iter=gibbs.samples, 
+                      K = K, 
+                      model = "DirDir", 
+                      alpha = 1, 
+                      gamma = 1/K, 
+                      iter = gibbs.samples, 
                       burnin = burnin)
   
   # Expectations
@@ -111,7 +110,7 @@ for (i in 1:length(dataset_names)) {
   df.results <- bind_rows(df.results, list(dataset = dataset, 
                                            model = "Gibbs Dir-Dir", 
                                            likelihood = like))
-  filename <- paste0("fig_E_V_GibbsDirDir_reconst_", dataset, ".eps")
+  filename <- paste0(plots_file, "_GibbsDirDir_", dataset, ".eps")
   p <- plot_V(E_V)
   ggsave(p, 
          filename = filename, 
@@ -128,8 +127,7 @@ for (i in 1:length(dataset_names)) {
   plot_trace_size_components(res)
   plot_dictionary(E_W, Kmax=15, rowlabels=FALSE)
   
-  
-  # VB DirBer --------------------------------------------------------------------
+  # VB DirBer ------------------------------------------------------------------
   res <- BernoulliNMF(V, 
                       K=K, 
                       model="DirBer", 
@@ -150,7 +148,7 @@ for (i in 1:length(dataset_names)) {
   
   # Save results
   p <- plot_V(E_V)
-  filename <-  paste0("fig_dmkd_E_V_VBDirBer_reconstruction_", dataset, ".eps")
+  filename <-  paste0(plots_file, "_VBDirBer", dataset, ".eps")
   ggsave(p, 
          filename = filename, 
          height=20,
@@ -166,8 +164,7 @@ for (i in 1:length(dataset_names)) {
   # * Expectation of the dictionary.
   plot_dictionary(E_W, Kmax=10, rowlabels=FALSE)
   
-  
-  # VB Aspect --------------------------------------------------------------------
+  # VB Aspect ------------------------------------------------------------------
   Kmax <- 9
   likes <- rep(-Inf, Kmax)
   lowerbounds <- rep(-Inf, Kmax)
@@ -207,8 +204,8 @@ for (i in 1:length(dataset_names)) {
   E_V <- expectation(res)
 
   # Save results
-  filename <- paste0("fig_E_V_VBAspect_reconstruction_", dataset, ".eps")
   p <- plot_V(E_V)
+  filename <- paste0(plots_file, "_VBAspect_", dataset, ".eps")
   ggsave(p, 
          filename = filename, 
          height=20, width=20, units='cm')
@@ -217,8 +214,7 @@ for (i in 1:length(dataset_names)) {
   # * Expectation of the dictionary.
   plot_dictionary(E_W, Kmax=100, rowlabels=TRUE)
   
-  
-  # logPCA --------------------------------------------------------------------
+  # logPCA ---------------------------------------------------------------------
   Kmax <- 20
   likes <- rep(-Inf, Kmax)
   models <- list()
@@ -245,10 +241,6 @@ for (i in 1:length(dataset_names)) {
   
   # Save results
   p <- plot_V(E_V)
-  filename <- paste0("fig_dmkd_E_V_logPCA_reconstruction_", dataset, ".eps")
-  ggsave(p, 
-         filename = filename, 
-         height=20, 
-         width=20, 
-         units='cm')
+  filename <- paste0(plots_file, "_logPCA_", dataset, ".eps")
+  ggsave(p, filename = filename, height=20, width=20, units='cm')
 }
