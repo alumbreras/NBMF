@@ -141,6 +141,7 @@ for (i in 1:length(dataset_names)) {
                          dataset = dataset,
                          ntest = ntest,
                          model= "VB Beta-Dir",
+                         K=K,
                          loglikelihood = pred$loglikelihood)
       save_result(file = results_file, df.results)
     }
