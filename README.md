@@ -1,4 +1,4 @@
-# Bernoulli Non-Negative Matrix Factorization
+# Bayesian Mean-parameterized Nonnegative Binary Matrix Factorization
 
 Code for our paper "Bayesian Mean-parameterized Nonnegative Binary Matrix Factorization"
 
