@@ -9,4 +9,4 @@ data-raw/
 *.eps
 *.png
 results_*
-
+*.DS_Store
