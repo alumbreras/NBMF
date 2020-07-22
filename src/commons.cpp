@@ -12,10 +12,8 @@ using namespace arma;
 void matrix_to_tensor(const arma::imat& Z, arma::icube& Z_tensor){
   int F = Z.n_rows;
   int N = Z.n_cols;
-  int K = Z.max();
   Z_tensor.zeros();
   
-  //arma::icube Z_tensor(F,K+1,N);
   Z_tensor.zeros();
   for(int n = 0; n<N; n++){
     for(int f = 0; f<F; f++){
@@ -26,13 +24,12 @@ void matrix_to_tensor(const arma::imat& Z, arma::icube& Z_tensor){
     }
   }
 }
+
 
 void vb_matrix_to_tensor(const arma::imat& Z, arma::cube& Z_tensor){
   int F = Z.n_rows;
   int N = Z.n_cols;
-  int K = Z.max();
-  
-  //arma::icube Z_tensor(F,K+1,N);
+
   Z_tensor.zeros();
   for(int n = 0; n<N; n++){
     for(int f = 0; f<F; f++){
@@ -43,7 +40,6 @@ void vb_matrix_to_tensor(const arma::imat& Z, arma::cube& Z_tensor){
     }
   }
 }
-
 
 
 // [[Rcpp::export]]

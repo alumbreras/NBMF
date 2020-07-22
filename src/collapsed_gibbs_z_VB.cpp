@@ -1,3 +1,5 @@
+// [[Rcpp::depends(BH)]]
+
 #include <RcppArmadillo.h>
 #include "commons.h"
 #include <boost/math/special_functions/digamma.hpp>
@@ -342,10 +344,6 @@ double lower_bound_aspect(const arma::cube& E_Z,
                          const arma::mat& alpha_vb, const arma::mat& beta_vb, 
                          double alpha, double beta, double gamma, 
                          const arma::imat& V){
-  //int Kmax = K+1;
-  int F = V.n_rows;
-  int N = V.n_cols;
-  int K = E_log_W.n_cols;
   double E_log_p_W = 0;
   double E_log_p_Z = 0;
   double E_log_p_H = 0;

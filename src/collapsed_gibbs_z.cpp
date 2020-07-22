@@ -282,7 +282,6 @@ SEXP Gibbs_DirBer_DP_Rcpp(const arma::imat& V,
   int Kmax = 200;
   int F = V.n_rows;
   int N = V.n_cols;
-  double prob_nonempty;
   arma::rowvec	probs(Kmax);
   arma::rowvec	probs_BP(Kmax);
   arma::irowvec ans(Kmax);

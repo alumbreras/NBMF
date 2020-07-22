@@ -24,15 +24,10 @@ SEXP sample_gibbs_cpp(const arma::ivec& v_n,
                         arma::imat C,
                         double alpha = 1, int iter=100,
                         double burnin = 0.5){
-
-  arma::irowvec c1;
-  arma:;irowvec c2;
-  
   int K = W.n_cols;
   int F = W.n_rows;
   int nburnin = std::floor(iter*burnin);
-  int nsamples = iter - std::floor(iter*burnin);
-    
+
   arma::mat    C_samples_mean(F, K); // Store E[C[f,k]]
   C_samples_mean.zeros();
   double j = 0;
@@ -45,9 +40,7 @@ SEXP sample_gibbs_cpp(const arma::ivec& v_n,
   arma::rowvec prior(K);
   
   for(int f=0; f<F; f++){
-    //likelihood_matrix.row(f) = pow(W.row(f)+0000.1, v_n[f]) % pow(1-W.row(f)+0000.1, 1-v_n[f]);
     likelihood_matrix.row(f) = v_n[f] * W.row(f) + (1-v_n[f]) * (1-W.row(f));
-    
     }
 
   L = arma::sum(C, 0); // tells how many counts in each k
@@ -74,12 +67,6 @@ SEXP sample_gibbs_cpp(const arma::ivec& v_n,
       //Sample new k for the occurrence
       ans = ans.zeros();
       rmultinom(1, probs.begin(), K, ans.begin());
-      //c1 = C.row(f);
-      //C.row(f) = C.row(f) + ans;  // add occurrence
-      //c2 = C.row(f);
-      //printVecs(c1,c2,K);
-      //Rf_PrintValue(wrap(probs));
-      //Rf_PrintValue(wrap(C));
     }
     // After burning, store samples
     // (or sufficient statistics, if samples won't be needed)
@@ -89,6 +76,5 @@ SEXP sample_gibbs_cpp(const arma::ivec& v_n,
     }
   }
   C_samples_mean = C_samples_mean/j;
-  //Rf_PrintValue(wrap(C_samples_mean));
   return Rcpp::wrap(C_samples_mean);
 }
