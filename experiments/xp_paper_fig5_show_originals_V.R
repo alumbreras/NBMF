@@ -1,22 +1,10 @@
 devtools::load_all()
 
-plots_file <- 'fig5_original'
+plots_file <- 'Fig5'
 
-data("unvotes100")
-p <- plot_V(unvotes100, xlab="vote", ylab = "country", aspect.ratio=1/3)
-dataset <- "unvotes100"
-ggsave(p, filename = paste0(plots_file, '_', dataset, '.eps'), 
-       height=5, width=12, units='cm')
-
-data("unvotes100coldwar")
-p <- plot_V(unvotes100coldwar, xlab="vote", ylab = "country", aspect.ratio=1/3)
-dataset <- "unvotes100coldwar"
-ggsave(p, filename = paste0(plots_file, '_', dataset, '.eps'), 
-       height=5, width=12, units='cm')
-
-data("unvotes100_abs")
-p <- plot_V(unvotes100_abs, xlab="vote", ylab = "country", aspect.ratio=1/3)
-dataset <- "unvotes100_abs_chronological"
+data("unvotes_original")
+p <- plot_V(unvotes_original, xlab="vote", ylab = "country", aspect.ratio=1/3)
+dataset <- "unvotes100_bw"
 ggsave(p, filename = paste0(plots_file, '_', dataset, '.eps'), 
        height=5, width=12, units='cm')
 
